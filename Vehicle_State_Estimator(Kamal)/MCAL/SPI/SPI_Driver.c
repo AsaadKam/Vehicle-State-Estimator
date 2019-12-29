@@ -62,6 +62,8 @@ Error_Type_t SPI_Init (str_Configuration_SPI_t * str_Confg)
 		}
 		if(str_Confg->au8_Interrupt_Mode==SPI_INTERRUPT_MODE)
 		{
+		   	SET_BIT(SREG,7);
+		    SET_BIT(SPCR,SPCR_SPIE);
 			gu8_Interrupt_Mode= SPI_INTERRUPT_MODE;
 			au8_error=ERROR_INIT_MASTER_OK;
 		}
@@ -90,6 +92,8 @@ Error_Type_t SPI_Init (str_Configuration_SPI_t * str_Confg)
 			SET_BIT(SPCR,SPCR_SPE); /*ENABLE SPI*/
 			if(str_Confg->au8_Interrupt_Mode==SPI_INTERRUPT_MODE)
 			{
+				SET_BIT(SREG,7);
+		        SET_BIT(SPCR,SPCR_SPIE);
 				gu8_Interrupt_Mode=SPI_INTERRUPT_MODE;
 				au8_error=ERROR_INIT_SLAVE_OK;
 			}
@@ -109,6 +113,8 @@ Error_Type_t SPI_Init (str_Configuration_SPI_t * str_Confg)
 			SET_BIT(SPCR,SPCR_SPE); /*ENABLE SPI*/
 			if(str_Confg->au8_Interrupt_Mode==SPI_INTERRUPT_MODE)
 			{
+				SET_BIT(SREG,7);
+	        	SET_BIT(SPCR,SPCR_SPIE);
 				gu8_Interrupt_Mode=SPI_INTERRUPT_MODE;
 				au8_error=ERROR_INIT_SLAVE_OK;
 			}
@@ -166,13 +172,13 @@ Error_Type_t SPI_RecieveByte (uint8_t * au8_PtrData)
 	uint8_t au8_error=0;
 	if(gu8_Interrupt_Mode==SPI_INTERRUPT_MODE)
 	{
-		SET_BIT(SREG,7);
+/* 		SET_BIT(SREG,7);
 		SET_BIT(SPCR,SPCR_SPIE);
 		if(gu8_Interrupt_Flag==1)
-		{
+		{ */
 			*au8_PtrData=SPDR;
-			gu8_Interrupt_Flag=0;
-		}
+/* 			gu8_Interrupt_Flag=0; */
+/* 		} */
 		au8_error=ERROR_RECIEVE_OK;
 	}
 	if(gu8_Interrupt_Mode==SPI_POLLING_MODE)
@@ -191,8 +197,8 @@ Error_Type_t SPI_RecieveByte (uint8_t * au8_PtrData)
 
 ISR(SPI_STC_vect)
 {
-	gu8_Interrupt_Flag=1;
-	CLEAR_BIT(SPCR,SPCR_SPIE);
+/* 	gu8_Interrupt_Flag=1; */
+/* 	CLEAR_BIT(SPCR,SPCR_SPIE); */
 	DIO_Write_pin(PA0,HIGH);
 }
 

@@ -73,7 +73,7 @@ uint8_t  InterruptMode;
 
 
 /*- FUNCTION DECLARATIONS ----------------------------------*/
-extern UART_Error_t UART_SetCallBack(PntrToFunc_t PntrToFunc_Copy_UART_TX_USER_ISR,PntrToFunc_t PntrToFunc_Copy_UART_RX_USER_ISR);
+extern UART_Error_t UART_Trans_SetCallBack(PntrToFunc_t PntrToFunc_Copy_UART_TX_USER_ISR);
 /*_______________________________________________________________________________________________________________________________*/
 /*Description: It initiates the UART from pointer to configuration of UART
  * Input     : (char_t* pchar_index)It takes pointer to char

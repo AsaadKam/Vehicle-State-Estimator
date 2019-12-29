@@ -83,5 +83,5 @@ Error_Type_t SPI_SendByte (const uint8_t au8_Data);
 
 Error_Type_t SPI_RecieveByte (uint8_t * au8_PtrData);
 
-Error_Type_t SPI_SETCALL_BACK(PntrToFunc_t Copy_pfunc_callbackfunc_ISR);
+Error_Type_t SPI_Trans_SetCallBack(PntrToFunc_t Copy_pfunc_callbackfunc_ISR);
 #endif /* PROJECT_SPI_H_ */

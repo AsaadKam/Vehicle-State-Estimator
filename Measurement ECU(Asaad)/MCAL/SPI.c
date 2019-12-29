@@ -6,7 +6,8 @@
 static uint8_t gu8_Interrupt_Mode =0;
 static uint8_t gu8_Interrupt_Flag=1;
 static volatile PntrToFunc_t PFUNC_SPI_FUNC_ISR=NullPointer;
-Error_Type_t SPI_SETCALL_BACK(PntrToFunc_t Copy_pfunc_callbackfunc_ISR)
+void __vector_12(void)__attribute((signal,used));
+Error_Type_t SPI_Trans_SetCallBack(PntrToFunc_t Copy_pfunc_callbackfunc_ISR)
 {
 	PFUNC_SPI_FUNC_ISR=Copy_pfunc_callbackfunc_ISR;
 }
@@ -59,6 +60,8 @@ Error_Type_t SPI_Init (str_Configuration_SPI_t * str_Confg)
 		}
 		if(str_Confg->au8_Interrupt_Mode==SPI_INTERRUPT_MODE)
 		{
+		    SET_BIT(SREG,7);
+		    SET_BIT(SPCR,SPCR_SPIE);
 			gu8_Interrupt_Mode= SPI_INTERRUPT_MODE;
 			au8_error=ERROR_INIT_MASTER_OK;
 		}
@@ -87,6 +90,8 @@ Error_Type_t SPI_Init (str_Configuration_SPI_t * str_Confg)
 			SET_BIT(SPCR,SPCR_SPE); /*ENABLE SPI*/
 			if(str_Confg->au8_Interrupt_Mode==SPI_INTERRUPT_MODE)
 			{
+				SET_BIT(SREG,7);
+		        SET_BIT(SPCR,SPCR_SPIE);
 				gu8_Interrupt_Mode=SPI_INTERRUPT_MODE;
 				au8_error=ERROR_INIT_SLAVE_OK;
 			}
@@ -106,7 +111,8 @@ Error_Type_t SPI_Init (str_Configuration_SPI_t * str_Confg)
 			SET_BIT(SPCR,SPCR_SPE); /*ENABLE SPI*/
 			if(str_Confg->au8_Interrupt_Mode==SPI_INTERRUPT_MODE)
 			{
-
+                SET_BIT(SREG,7);
+		        SET_BIT(SPCR,SPCR_SPIE);
 				gu8_Interrupt_Mode=SPI_INTERRUPT_MODE;
 				au8_error=ERROR_INIT_SLAVE_OK;
 			}
@@ -138,13 +144,9 @@ Error_Type_t SPI_SendByte (const uint8_t au8_Data)
 	uint8_t au8_error=0;
 	if(gu8_Interrupt_Mode==SPI_INTERRUPT_MODE)
 	{
-		SET_BIT(SREG,7);
-		SET_BIT(SPCR,SPCR_SPIE);
-		if(gu8_Interrupt_Flag==1)
-		{
-			SPDR=au8_Data;
-			gu8_Interrupt_Flag=0;
-		}
+
+		SPDR=au8_Data;
+		gu8_Interrupt_Flag=0;
 		au8_error=ERROR_SEND_OK;
 	}
 	else if(gu8_Interrupt_Mode==SPI_POLLING_MODE)
@@ -162,16 +164,16 @@ Error_Type_t SPI_SendByte (const uint8_t au8_Data)
 Error_Type_t SPI_RecieveByte (uint8_t * au8_PtrData)
 {
 	uint8_t au8_error=0;
-	if(gu8_Interrupt_Mode==SPI_INTERRUPT_MODE)
+ 	if(gu8_Interrupt_Mode==SPI_INTERRUPT_MODE)
 	{
 
-     	if(gu8_Interrupt_Flag==1)
+/*      if(gu8_Interrupt_Flag==1)
 		{ 
 			SET_BIT(SREG,7);
-		    SET_BIT(SPCR,SPCR_SPIE);
+		    SET_BIT(SPCR,SPCR_SPIE);  */
 			*au8_PtrData=SPDR;
-			gu8_Interrupt_Flag=0;
-		} 
+/* 			gu8_Interrupt_Flag=0;
+		}  */
 		au8_error=ERROR_RECIEVE_OK;
 	}
 	if(gu8_Interrupt_Mode==SPI_POLLING_MODE)
@@ -188,11 +190,9 @@ Error_Type_t SPI_RecieveByte (uint8_t * au8_PtrData)
 	return au8_error;
 }
 
-ISR(SPI_STC_vect)
+void __vector_12(void)
 {
-/* 	PFUNC_SPI_FUNC_ISR(); */
-	gu8_Interrupt_Flag=1;
-
+  PFUNC_SPI_FUNC_ISR(); 
 }
 
 

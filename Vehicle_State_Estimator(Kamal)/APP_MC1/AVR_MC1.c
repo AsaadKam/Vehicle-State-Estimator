@@ -116,6 +116,7 @@ void System_Dispatch(void)
 		break;
 	case SYSTEM_NORMAL_SPEED:
 		SPI_SendByte(gu8_Init_Speed);
+		gu8_Dispatch_status=SYSTEM_UPDATED_SPEED;
 		break;
 	case SYSTEM_UPDATED_SPEED:
 		if(gu8_sw1_flag==1)

@@ -3,7 +3,7 @@
 
 
 
-const UART_Confg_Stuct_t Measurement_ECU_TX_UART_CONFIG={UART_trasmit_Enable
+const UART_Confg_Stuct_t Measurement_ECU_TX_UART_CONFIG={ UART_trasmit_Enable
 
 														 ,UART_Receive_Disable
 														 
@@ -15,5 +15,5 @@ const UART_Confg_Stuct_t Measurement_ECU_TX_UART_CONFIG={UART_trasmit_Enable
 														 
 														 ,UART_Frame_8_bit_
 														 
-														 ,UART_Polling_mode_enable          };
+														 ,UART_Interrupt_mode_enable   };
 
