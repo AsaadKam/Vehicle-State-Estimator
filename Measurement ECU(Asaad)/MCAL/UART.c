@@ -109,15 +109,15 @@ UART_Error_t UART_Init(const UART_Confg_Stuct_t* pstr_Config_UART)
 		/*** Check for parity ***/
 		if(pstr_Config_UART->Parity==UART_Parity_Disabled)
 		{
-			UART_CNTRL_STATUS_REG_C|=(0<<UART_Parity_Bit_1)|(0<<UART_Parity_Bit_0);
+			UART_CNTRL_STATUS_REG_C|=(1<<UART_CHOOSE_UART_CNTRL_STATUS_REG_C_BIT)|(0<<UART_Parity_Bit_1)|(0<<UART_Parity_Bit_0);
 		}
 		else if(pstr_Config_UART->Parity==UART_Parity_Even)
 		{
-			UART_CNTRL_STATUS_REG_C|=(1<<UART_Parity_Bit_1)|(0<<UART_Parity_Bit_0);			
+			UART_CNTRL_STATUS_REG_C|=(1<<UART_CHOOSE_UART_CNTRL_STATUS_REG_C_BIT)|(1<<UART_Parity_Bit_1)|(0<<UART_Parity_Bit_0);			
 		}
 		else if(pstr_Config_UART->Parity==UART_Parity_Odd)
 		{
-			UART_CNTRL_STATUS_REG_C|=(1<<UART_Parity_Bit_1)|(1<<UART_Parity_Bit_0);				
+			UART_CNTRL_STATUS_REG_C|=(1<<UART_CHOOSE_UART_CNTRL_STATUS_REG_C_BIT)|(1<<UART_Parity_Bit_1)|(1<<UART_Parity_Bit_0);				
 		}
 		else
 		{
@@ -125,11 +125,11 @@ UART_Error_t UART_Init(const UART_Confg_Stuct_t* pstr_Config_UART)
 		/*** Set frame format: Stop bit***/
 		if(pstr_Config_UART->Parity==UART_two_Stop_bit)
 		{
-			UART_CNTRL_STATUS_REG_C|=(1<<UART_STOP_setting_Bit);				
+			UART_CNTRL_STATUS_REG_C|=(1<<UART_CHOOSE_UART_CNTRL_STATUS_REG_C_BIT)|(1<<UART_STOP_setting_Bit);				
 		}
 		else if(pstr_Config_UART->Parity==UART_One_Stop_bit)
 		{
-			UART_CNTRL_STATUS_REG_C|=(0<<UART_STOP_setting_Bit);
+			UART_CNTRL_STATUS_REG_C|=(1<<UART_CHOOSE_UART_CNTRL_STATUS_REG_C_BIT)|(0<<UART_STOP_setting_Bit);
 		}
 		else
 		{
@@ -137,23 +137,23 @@ UART_Error_t UART_Init(const UART_Confg_Stuct_t* pstr_Config_UART)
 		/* Set frame format:Data_size */
 		if(pstr_Config_UART->Data_size==UART_Frame_5_bit_)
 		{
-			UART_CNTRL_STATUS_REG_C|=(0<<UART_Bit_Data_Size_bit_2)|(0<<UART_Bit_Data_Size_bit_1)|(0<<UART_Bit_Data_Size_bit_0);
+			UART_CNTRL_STATUS_REG_C|=(1<<UART_CHOOSE_UART_CNTRL_STATUS_REG_C_BIT)|(0<<UART_Bit_Data_Size_bit_2)|(0<<UART_Bit_Data_Size_bit_1)|(0<<UART_Bit_Data_Size_bit_0);
 		}
 		else if(pstr_Config_UART->Data_size==UART_Frame_6_bit_)
 		{
-			UART_CNTRL_STATUS_REG_C|=(0<<UART_Bit_Data_Size_bit_2)|(0<<UART_Bit_Data_Size_bit_1)|(1<<UART_Bit_Data_Size_bit_0);
+			UART_CNTRL_STATUS_REG_C|=(1<<UART_CHOOSE_UART_CNTRL_STATUS_REG_C_BIT)|(0<<UART_Bit_Data_Size_bit_2)|(0<<UART_Bit_Data_Size_bit_1)|(1<<UART_Bit_Data_Size_bit_0);
 		}
 		else if(pstr_Config_UART->Data_size==UART_Frame_7_bit_)
 		{
-			UART_CNTRL_STATUS_REG_C|=(0<<UART_Bit_Data_Size_bit_2)|(1<<UART_Bit_Data_Size_bit_1)|(0<<UART_Bit_Data_Size_bit_0);
+			UART_CNTRL_STATUS_REG_C|=(1<<UART_CHOOSE_UART_CNTRL_STATUS_REG_C_BIT)|(0<<UART_Bit_Data_Size_bit_2)|(1<<UART_Bit_Data_Size_bit_1)|(0<<UART_Bit_Data_Size_bit_0);
 		}			
 		else if(pstr_Config_UART->Data_size==UART_Frame_8_bit_)
 		{
-			UART_CNTRL_STATUS_REG_C|=(0<<UART_Bit_Data_Size_bit_2)|(1<<UART_Bit_Data_Size_bit_1)|(1<<UART_Bit_Data_Size_bit_0);			
+			UART_CNTRL_STATUS_REG_C|=(1<<UART_CHOOSE_UART_CNTRL_STATUS_REG_C_BIT)|(0<<UART_Bit_Data_Size_bit_2)|(1<<UART_Bit_Data_Size_bit_1)|(1<<UART_Bit_Data_Size_bit_0);			
 		}	
 		else if(pstr_Config_UART->Data_size==UART_Frame_9_bit_)
 		{
-			UART_CNTRL_STATUS_REG_C|=(1<<UART_Bit_Data_Size_bit_2)|(1<<UART_Bit_Data_Size_bit_1)|(1<<UART_Bit_Data_Size_bit_0);					
+			UART_CNTRL_STATUS_REG_C|=(1<<UART_CHOOSE_UART_CNTRL_STATUS_REG_C_BIT)|(1<<UART_Bit_Data_Size_bit_2)|(1<<UART_Bit_Data_Size_bit_1)|(1<<UART_Bit_Data_Size_bit_0);					
 		}	
 	    else
 		{
@@ -304,4 +304,3 @@ UART_Error_t UART_RecByte(uint8_t volatile * volatile pchar_index)
 	}
 
 }
-
